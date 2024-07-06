@@ -19,7 +19,9 @@ def index():
             "/song/play",
             "/song/stop",
             "/lighting/set",
-            "/ac/set"
+            "/ac/set",
+            "/lighting/get",
+            "/ac/get"
         ]
     })
 

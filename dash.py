@@ -6,9 +6,9 @@ from pygame import mixer  # We'll use pygame to handle audio playback
 # Initialize the pygame mixer
 mixer.init()
 
-# Define file paths for the uploaded songs
-song1_path = r'/Users/shreya/Downloads/Death Grips - Get Got.mp3'
-song2_path = r'/Users/shreya/Downloads/Death Grips - The Fever (Aye Aye).mp3'
+''' Define file paths for the uploaded songs
+song1_path = r'#add file path from the folder'
+song2_path = r'#add file path from the folder'''
 
 request_queue = PriorityQueue()
 
@@ -35,7 +35,7 @@ def process_requests():
                 mixer.music.load(value)
                 mixer.music.play()
                 st.success(f"Playing {os.path.basename(value)}")
-        elif request_type == "Maps":
+        if request_type == "Maps":
             start, end = value
             st.success(f"Navigating from {start} to {end}")
         elif request_type == "Lighting":
