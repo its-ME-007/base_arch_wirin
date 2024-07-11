@@ -1,9 +1,13 @@
-# app.py
-
+import logging
 from threading import Thread
 from flask import Flask, jsonify
 from lighting_ac import lighting_bp
 from maps import mapping_bp
+from ac import ac_bp
+from door import door_bp
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
 
 def create_main_app():
     app = Flask(__name__)
@@ -16,7 +20,12 @@ def create_main_app():
                 "/lighting/set",
                 "/lighting/get", 
                 "/mapping/directions?origin=<origin>&destination=<destination>", 
-                "/lighting/get"
+                "/lighting/get",
+                "/ac/set",
+                "/ac/get",
+                "/door/<door_id>/status",
+                "/car/can_start"
+
             ]
         })
 
@@ -36,24 +45,46 @@ def create_mapping_app():
     app.register_blueprint(mapping_bp, url_prefix='/api')
     return app
 
+def create_ac_app():
+    app = Flask(__name__)
+    app.register_blueprint(ac_bp, url_prefix='/api')
+    return app
+
+def create_door_app():
+    app = Flask(__name__)
+    app.register_blueprint(door_bp, url_prefix='/api')
+    return app
 
 def run_service(app, port):
-    app.run(host='0.0.0.0', port=port)
+    logging.debug(f"Starting service on port {port}")
+    try:
+        app.run(host='0.0.0.0', port=port)
+    except Exception as e:
+        logging.error(f"Error running service on port {port}: {e}")
+
 
 if __name__ == '__main__':
     main_app = create_main_app()
     lighting_app = create_lighting_app()
     mapping_app = create_mapping_app()
+    ac_app = create_ac_app()
+    door_app = create_door_app()
 
     main_thread = Thread(target=run_service, args=(main_app, 5000))
     lighting_thread = Thread(target=run_service, args=(lighting_app, 5001))
     mapping_thread = Thread(target=run_service, args=(mapping_app, 5002))
+    ac_thread = Thread(target=run_service, args=(ac_app, 5003))
+    door_thread = Thread(target=run_service, args=(door_app, 5004))
 
     main_thread.start()
     lighting_thread.start()
     mapping_thread.start()
-
+    ac_thread.start()
+    door_thread.start()
 
     main_thread.join()
     lighting_thread.join()
     mapping_thread.join()
+    ac_thread.join()
+    door_thread.join()
+

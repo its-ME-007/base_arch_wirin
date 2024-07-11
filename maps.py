@@ -94,6 +94,7 @@ def directions():
     data = response.json()
     route = data['routes'][0]['geometry']
     return jsonify({'route': route})
+    
 
 
 
