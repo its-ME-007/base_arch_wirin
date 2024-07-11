@@ -1,11 +1,10 @@
-
 function getRoute() {
     if (!startCoordinates || !endCoordinates) {
         alert("Please enter both a starting location and a destination.");
         return;
     }
 
-    fetch(`/directions?start=${startCoordinates.join(',')}&end=${endCoordinates.join(',')}`)
+    fetch(`/api/directions?start=${startCoordinates.join(',')}&end=${endCoordinates.join(',')}`)
         .then(response => response.json())
         .then(data => {
             const route = data.route;

@@ -77,8 +77,6 @@ MAPBOX_TOKEN = 'pk.eyJ1Ijoid2lwb2RydmNlIiwiYSI6ImNsdnVzN255YzE5MDYycm55c3hheDhtd
 def index():
     return render_template('index.html', mapbox_token=MAPBOX_TOKEN)
 
-
-
 @mapping_bp.route('/geocode')
 def geocode():
     address = request.args.get('address')
