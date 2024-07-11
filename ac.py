@@ -12,7 +12,7 @@ def set_ac():
     if actemperature is None:
         return jsonify({"error": "ac temperature is required"}), 400
     current_ac = actemperature
-    result = f"Current ac temperature is {actemperature}"
+    result = f"Current ac temperature is set to {actemperature}"
     return jsonify({"result": result})
 
 @ac_bp.route('/ac/get', methods=['GET'])

@@ -1,43 +1,41 @@
 import streamlit as st
 import requests
 
-BASE_URL = "http://localhost:5000"
+BASE_URL = "http://localhost:5000/api"
+MAP_URL = "http://localhost:5002/api"
+LIGHTING_URL = "http://localhost:5001/api"
+AC_URL = "http://localhost:5003/api"
 
 st.title("Modular Request Resolver")
 
-# Mapping Application
-st.header("Mapping Application")
-origin = st.text_input("Origin", "New York")
-destination = st.text_input("Destination", "Los Angeles")
-if st.button("Get Directions"):
-    response = requests.get(f"{BASE_URL}/mapping/directions", params={"origin": origin, "destination": destination})
-    if response.status_code == 200:
-        st.write(response.json()["directions"])
-    else:
-        st.error(response.json().get("error", "An error occurred"))
+if st.button("Open Mapping Interface"):
+    # Construct the URL with origin and destination parameters
+    map_url = MAP_URL
+    # Redirect to the mapping interface
+    st.markdown(f"[Go to Mapping Interface]({map_url})")
 
 # Song Player
-st.header("Song Player")
-song_id = st.text_input("Song ID", "12345")
-if st.button("Play Song"):
-    response = requests.post(f"{BASE_URL}/song/play", json={"song_id": song_id})
-    if response.status_code == 200:
-        st.write(response.json()["result"])
-    else:
-        st.error(response.json().get("error", "An error occurred"))
-
-if st.button("Stop Song"):
-    response = requests.post(f"{BASE_URL}/song/stop")
-    if response.status_code == 200:
-        st.write(response.json()["result"])
-    else:
-        st.error(response.json().get("error", "An error occurred"))
+# Redirect URLs
+st.header("Redirect URLs")
+if st.button("Go to Google"):
+    st.markdown("[Google](https://www.google.com)")
+if st.button("Go to GitHub"):
+    st.markdown("[GitHub](https://github.com)")
+if st.button("Watch YouTube Video"):
+    st.markdown("[Watch YouTube Video](https://youtu.be/B1Qcb5xQ96M?si=OBDkWUGTC7WQM9Je)")
 
 # Lighting and AC Control
 st.header("Lighting and AC Control")
 intensity = st.slider("Lighting Intensity", 0, 100, 50)
 if st.button("Set Lighting"):
-    response = requests.post(f"{BASE_URL}/lighting/set", json={"intensity": intensity})
+    response = requests.post(f"{LIGHTING_URL}/lighting/set", json={"intensity": intensity})
+    if response.status_code == 200:
+        st.write(response.json()["result"])
+    else:
+        st.error(response.json().get("error", "An error occurred"))
+
+if st.button("Get Lighting"):
+    response = requests.get(f"{LIGHTING_URL}/lighting/get", json={"intensity": intensity})
     if response.status_code == 200:
         st.write(response.json()["result"])
     else:
@@ -45,8 +43,18 @@ if st.button("Set Lighting"):
 
 temperature = st.slider("AC Temperature (°C)", 16, 30, 22)
 if st.button("Set AC Temperature"):
-    response = requests.post(f"{BASE_URL}/ac/set", json={"temperature": temperature})
+    response = requests.post(f"{AC_URL}/ac/set", json={"temperature": temperature})
     if response.status_code == 200:
         st.write(response.json()["result"])
     else:
         st.error(response.json().get("error", "An error occurred"))
+
+if st.button("get AC Temperature"):
+    response = requests.get(f"{AC_URL}/ac/get", json={"temperature": temperature})
+    if response.status_code == 200:
+        st.write(response.json()["result"])
+    else:
+        st.error(response.json().get("error", "An error occurred"))
+
+
+
