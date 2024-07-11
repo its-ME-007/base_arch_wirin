@@ -5,6 +5,7 @@ BASE_URL = "http://localhost:5000/api"
 MAP_URL = "http://localhost:5002/api"
 LIGHTING_URL = "http://localhost:5001/api"
 AC_URL = "http://localhost:5003/api"
+SOUND_URL = "https://localhost:5005/api"
 
 st.title("Modular Request Resolver")
 
@@ -55,6 +56,7 @@ if st.button("get AC Temperature"):
         st.write(response.json()["result"])
     else:
         st.error(response.json().get("error", "An error occurred"))
+
 
 
 

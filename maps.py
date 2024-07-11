@@ -93,8 +93,15 @@ def directions():
     response = requests.get(f'https://api.mapbox.com/directions/v5/mapbox/driving/{start};{end}?geometries=geojson&overview=full&steps=true&access_token={MAPBOX_TOKEN}')
     data = response.json()
     route = data['routes'][0]['geometry']
+    print(route)
+    print(data)
     return jsonify({'route': route})
     
+app = Flask(__name__)
+app.register_blueprint(mapping_bp, url_prefix='/mapping')
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 
