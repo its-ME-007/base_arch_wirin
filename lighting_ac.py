@@ -1,12 +1,13 @@
+# lighting_ac.py
+
 from flask import Blueprint, jsonify, request
 
-lighting_ac = Blueprint('lighting_ac', __name__)
+lighting_bp = Blueprint('lighting', __name__)
 
-# Assuming you have a way to store the current lighting intensity and AC temperature
+# Assuming you have a way to store the current lighting intensity
 current_lighting_intensity = 0
-current_ac_temperature = 0
 
-@lighting_ac.route('/lighting/set', methods=['POST'])
+@lighting_bp.route('/lighting/set', methods=['POST'])
 def set_lighting():
     global current_lighting_intensity
     data = request.json
@@ -17,25 +18,8 @@ def set_lighting():
     result = f"Setting lighting intensity to {intensity}"
     return jsonify({"result": result})
 
-@lighting_ac.route('/lighting/get', methods=['GET'])
+@lighting_bp.route('/lighting/get', methods=['GET'])
 def get_lighting():
     global current_lighting_intensity
     result = f"Current lighting intensity is {current_lighting_intensity}"
-    return jsonify({"result": result})
-
-@lighting_ac.route('/ac/set', methods=['POST'])
-def set_ac():
-    global current_ac_temperature
-    data = request.json
-    temperature = data.get('temperature')
-    if temperature is None:
-        return jsonify({"error": "AC temperature is required"}), 400
-    current_ac_temperature = temperature
-    result = f"Setting AC temperature to {temperature}°C"
-    return jsonify({"result": result})
-
-@lighting_ac.route('/ac/get', methods=['GET'])
-def get_ac():
-    global current_ac_temperature
-    result = f"Current AC temperature is {current_ac_temperature}°C"
     return jsonify({"result": result})
