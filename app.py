@@ -46,10 +46,6 @@ def create_ac_app():
     app.register_blueprint(ac_bp, url_prefix='/api')
     return app
 
-def create_door_app():
-    app = Flask(__name__)
-    app.register_blueprint(door_bp, url_prefix='/api')
-    return app
 
 def create_sound_app():
     app = Flask(__name__)
@@ -67,28 +63,28 @@ if __name__ == '__main__':
     lighting_app = create_lighting_app()
     mapping_app = create_mapping_app()
     ac_app = create_ac_app()
-    door_app = create_door_app()
+   # door_app = create_door_app()
     sound_app = create_sound_app()
 
     main_thread = Thread(target=run_service, args=(main_app, 5000))
     lighting_thread = Thread(target=run_service, args=(lighting_app, 5001))
     mapping_thread = Thread(target=run_service, args=(mapping_app, 5002))
     ac_thread = Thread(target=run_service, args=(ac_app, 5003))
-    door_thread = Thread(target=run_service, args=(door_app, 500))
+    #door_thread = Thread(target=run_service, args=(door_app, 5005))
     sound_thread = Thread(target=run_service, args=(sound_app, 5004))
 
     main_thread.start()
     lighting_thread.start()
     mapping_thread.start()
     ac_thread.start()
-    door_thread.start()
+    #door_thread.start()
     sound_thread.start()
 
     main_thread.join()
     lighting_thread.join()
     mapping_thread.join()
     ac_thread.join()
-    door_thread.join()
+    #door_thread.join()
     sound_thread.join()
 
 
