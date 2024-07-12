@@ -5,7 +5,7 @@ BASE_URL = "http://localhost:5000/api"
 MAP_URL = "http://localhost:5002/api"
 LIGHTING_URL = "http://localhost:5001/api"
 AC_URL = "http://localhost:5003/api"
-SOUND_URL = "https://localhost:5005/api"
+SOUND_URL = "https://localhost:5004/api"
 
 st.title("Modular Request Resolver")
 
@@ -57,6 +57,26 @@ if st.button("get AC Temperature"):
     else:
         st.error(response.json().get("error", "An error occurred"))
 
+volume= st.slider("Stereo Output", 0, 100, 50)
+if st.button("Set volume"):
+    response = requests.post(f"{SOUND_URL}/volume/set", json={"volume": volume})
+    if response.status_code == 200:
+        st.write(response.json()["result"])
+    else:
+        st.error(response.json().get("error", "An error occurred"))
 
+if st.button("Get Volume"):
+    response = requests.get(f"{SOUND_URL}/volume", json={"volume": volume})
+    if response.status_code == 200:
+        st.write(response.json()["result"])
+    else:
+        st.error(response.json().get("error","An error occured"))
+
+if st.button("Mute"):
+    response = requests.post(f"{SOUND_URL}/mute", json={"volume": volume})
+    if response.status_code == 200:
+        st.write(response.json()["result"])
+    else:
+        st.error(response.json().get("error", "An error occurred"))
 
 
